@@ -1,21 +1,105 @@
+:root {
+    --nav-desktop-width: 14rem;
+}
+
 * {
     margin: 0;
     padding: 0;
 }
 
 html {
+    width: 100%;
     height: 100%;
+    font-size: 1vw;
 }
+
 body {
     font-family: 'Nunito';
     background-color: black;
-    display: flex;
-    align-items: center;
-    height: 100%;
     background: url(../img/bg.jpg);
     background-color: grey;
     background-blend-mode: multiply;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
+
+#overlayStack{
+    position: absolute;
+}
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: .5;
+    position: absolute;
+}
+
+
+#modalStack{
+    position: absolute;
+}
+
+#nav-mobile {
+    --width: 80vw;
+    width: var(--width);
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+    box-sizing: border-box;
+    display: flex;
+    transition: .3s;
+    pointer-events: none;
+    display: none;
+}
+
+#nav-mobile > .navMain {
+    width: calc(var(--width) * .8);
+    height: 100%;
+    background-color: black;
+    color: white;
+    pointer-events: auto;
+}
+
+#nav-mobile > .navToggle{
+    width: calc(var(--width) * .1);
+    height: calc(var(--width) * .1);
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0rem 1rem 1rem 0;
+    color: white;
+    background-color: black;
+    opacity: .7;
+    transition: .2s;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+#nav-mobile > .navToggle:hover {
+    opacity: 1;
+    transition: .2s;
+}
+/* possible css feature request:
+It would be nice if we have some kind of feature that can save whole declaration block
+in a variable, and apply it in other selectors. 
+for example, the .navToggleHovered selector below, i can save its declaration block
+in a variable, say --navHoverStyle, then i can apply inside 
+the selector nav > .navToggle:hover above with a syntax like:
+nav > .navToggle:hover { include --navHoverStyle }
+*/
+#nav-mobile > .navToggleHovered {
+    opacity: 1;
+    transition: .2s;
+}
+
+.navHide {
+    margin-left: calc(var(--width) *.8 * -1);
+    transition: .3s;
+
+}
+
 
 #container {
     width: 100%;
@@ -23,73 +107,106 @@ body {
     display: flex;
 }
 
-nav {
+
+#nav-desktop {
     box-sizing: border-box;
     height: 100%;
-    width: 20%;
-    min-width: 300px;
+    width: var(--nav-desktop-width);
     background-color: white;
-    padding: 2em;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-size: 1.25rem;
 }
 
-nav > header > i {
-    font-size: 3em;
+
+#nav-desktop > header > i {
     color:black;
     text-align: center;
+    font-size: 2em;
 }
 
-nav > header {
+#nav-desktop > header {
     color:#63B83F;
     align-self: flex-start;
     display: flex;
     align-items: center;
     text-align: center;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
-nav > ul:nth-of-type(1) {
-    font-size: 2em;
+#nav-desktop > ul:nth-of-type(1) {
     list-style-type: none;
     margin: 2em 0;
 }
-nav > ul:nth-of-type(1) > li {
+#nav-desktop > ul:nth-of-type(1) > li {
     margin: .5em 0;
 }
-nav > ul:nth-of-type(1) > li:hover {
+#nav-desktop > ul:nth-of-type(1) > li:hover {
     cursor: pointer;
     color:#63B83F;
 }
 
 
-nav > ul:nth-of-type(2) {
-    font-size: 2em;
+#nav-desktop > ul:nth-of-type(2) {
     list-style-type: none;
 }
-nav > ul:nth-of-type(2) > li:hover {
+#nav-desktop > ul:nth-of-type(2) > li:hover {
     cursor: pointer;
     color:#63B83F;
 }
 
-section {
-    width: 80%;
-    box-sizing: border-box;
+main {
     color: white;
-    font-size: 2em;
-    padding: 1em;
+    padding: 4rem;
+    width: calc(100% - var(--nav-desktop-width));
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-section > header {
-    margin-bottom: 1em;
+main > header {
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
-section > section {
+main > section {
     background-color: white;
     color: black;
-    font-size: 1em;
     border-radius: 20px;
+    padding: 1rem;
     width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
     height: 80%;
 }
+
+@media (max-aspect-ratio: 8 / 5){
+    
+    #nav-desktop {
+        display: none;
+    }
+    
+    #nav-mobile {
+        display: flex;
+    }
+
+    main {
+        width: 100%;
+    }
+}
+
+@media (max-aspect-ratio: 1/1) {
+    html {
+        font-size: 1vh;
+    }
+}
+
+/* 
+todo: -try to separate sections of this css in separate files using @import
+      -do the mobile nav elements, decide if you use javascript to copy html, or just
+        hard code it (copy paste current desktop html code inside  mobile nav tag)
+*/
