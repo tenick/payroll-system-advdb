@@ -1,0 +1,41 @@
+:root {
+    --nav-desktop-width: 14rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 1vw;
+    font-family: 'Nunito';
+    background-color: black;
+    background: url(../public/bg.jpg);
+    background-color: grey;
+    background-blend-mode: multiply;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-aspect-ratio: 1/1) {
+    html {
+        font-size: 1vh;
+    }
+}
+

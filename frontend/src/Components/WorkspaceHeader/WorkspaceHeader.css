@@ -1,0 +1,8 @@
+#workspaceHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    box-sizing: border-box;
+}
+

@@ -1,0 +1,16 @@
+#searchBar {
+    display: flex;
+    align-items: center;
+}
+
+#searchBar > input {
+    box-sizing: border-box;
+    font-family: 'Nunito';
+    font-size: .75em;
+    padding: .25em .5em;
+    display: block;
+    background-color: #777777CC;
+    color: white;
+    border-radius: 100px;
+    width: 100%;
+}
