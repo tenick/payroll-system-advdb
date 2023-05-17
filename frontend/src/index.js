@@ -11,4 +11,4 @@ root.render(
       <App />
     </AuthContextProvider>
   </React.StrictMode>
-);
+); // strict mode renders components twice btw

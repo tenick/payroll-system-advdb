@@ -9,7 +9,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
     const { userState } = useAuthStatus();
-    console.log("user from app: ", userState);
 
     return (
         <div id='app'>

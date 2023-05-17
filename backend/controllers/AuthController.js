@@ -14,27 +14,31 @@ const loginUser = async (req, res) => {
         const [adminsFound, _ ] = await pool.execute('SELECT * FROM Admin_tb WHERE user_credential_id="' + userCred.user_credential_id +'"');
         const admin = adminsFound[0];
         let role = 'admin';
-        let id = admin?.id;
+        let id = admin?.admin_id;
+
+        console.log('found admin: ', admin);
         
         if (typeof admin === 'undefined'){
             const [employeesFound, _ ] = await pool.execute('SELECT * FROM Employee_tb WHERE user_credential_id="' + userCred.user_credential_id +'"');
             const employee = employeesFound[0];
             
             role = 'employee';
-            id = employee.id;
+            id = employee?.employee_id;
         }
-        
-        const userData = {id, 'email_address': userCred.email_address, role};
-        const accessToken = createToken(userData);
-        res.cookie("accessToken", accessToken, {httpOnly: true});
-        res.status(200);
-        res.json(userData);
-        console.log('logged in!');
-        return;
+
+        if (typeof id !== 'undefined' && id !== null) {
+            const userData = {id, 'email_address': userCred.email_address, role};
+            const accessToken = createToken(userData);
+            res.cookie("accessToken", accessToken, {httpOnly: true});
+            res.status(200);
+            res.json(userData);
+            console.log('logged in!');
+            return;
+        }
     }
     
     res.status(401);
-    res.send("Wrong username and/or password.");
+    res.json({error: "Wrong username and/or password."});
 }
 
 const authorizeUser = async (req, res) => {

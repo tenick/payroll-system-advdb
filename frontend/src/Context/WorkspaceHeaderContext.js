@@ -14,8 +14,6 @@ export const workspaceHeaderReducer = (state, action) => {
 export const WorkspaceHeaderContextProvider = ({children}) => {
     const [workspaceHeaderState, dispatch] = useReducer(workspaceHeaderReducer, {header: 'Employee', searchEnabled: true});
 
-    console.log("teststesfrsdtsetse", workspaceHeaderState)
-
     return (
         <WorkspaceHeaderContext.Provider value={{workspaceHeaderState, dispatch}}>
             { children }

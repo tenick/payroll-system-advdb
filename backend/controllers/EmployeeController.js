@@ -1,9 +1,39 @@
 const Employee = require('../models/Employee');
 
 const getEmployeeByName = async (req, res) => {
-    const foundEmployees = await Employee.findByName(req.params.name);
+    try {
+        const foundEmployees = await Employee.findByName(req.params.name);
+        res.json(foundEmployees);
+    }
+    catch(err) {
+        res.status(400);
+        res.json({error: err.message});
+    }
+}
 
-    res.json({msg: 'GET employee by name: '+ req.params.name, result: foundEmployees});
+const getEmployeeByEmail = async (req, res) => {
+    try {
+        const foundEmployees = await Employee.findByEmail(req.params.email);
+        res.json(foundEmployees);
+    }
+    catch(err) {
+        console.log('herefsdfsdee?');
+        res.status(400);
+        res.json({error: err.message});
+    }
+}
+
+
+const getEmployeeByID = async (req, res) => {
+    console.log('watreached here.. right', req.params.id);
+    try {
+        const foundEmployees = await Employee.findById(req.params.id);
+        res.json(foundEmployees);
+    }
+    catch(err) {
+        res.status(400);
+        res.json({error: err.message});
+    }
 }
 
 const addEmployee = async (req, res) => {
@@ -23,15 +53,21 @@ const addEmployee = async (req, res) => {
             sick_leave,
             emergency_leave } = req.body;
     
-    const newEmployeeID = await Employee.save(gross_salary, employee_position, probation_end_date,
-        first_name, last_name, sex, contact_number, 
-        email_address, user_password,
-        sss, pagibig, philhealth,
-        vacation_leave, sick_leave, emergency_leave);
+    try {
+        const newEmployeeID = await Employee.save(gross_salary, employee_position, probation_end_date,
+            first_name, last_name, sex, contact_number, 
+            email_address, user_password,
+            sss, pagibig, philhealth,
+            vacation_leave, sick_leave, emergency_leave);
 
-    console.log('added new employee! ID: ', newEmployeeID);
+        console.log('added new employee! ID: ', newEmployeeID);
 
-    res.json({msg: 'POST new employee ID: '+newEmployeeID});
+        res.json({msg: 'POST new employee ID: '+newEmployeeID});
+    }
+    catch (err){
+        res.status(400);
+        res.json({error: err.message})
+    }
 }
 
 const updateEmployee = async (req, res) => {
@@ -39,8 +75,6 @@ const updateEmployee = async (req, res) => {
         last_name, 
         sex, 
         contact_number, 
-        email_address, 
-        user_password,
         gross_salary,
         employee_position,
         probation_end_date,
@@ -51,14 +85,19 @@ const updateEmployee = async (req, res) => {
         vacation_leave,
         sick_leave,
         emergency_leave } = req.body;
+    
+    try {
+        await Employee.updateById(req.params.id, gross_salary, employee_position, probation_end_date, employee_status,
+            first_name, last_name, sex, contact_number,
+            sss, pagibig, philhealth,
+            vacation_leave, sick_leave, emergency_leave);
 
-    await Employee.updateById(req.params.id, gross_salary, employee_position, probation_end_date, employee_status,
-        first_name, last_name, sex, contact_number, 
-        email_address, user_password,
-        sss, pagibig, philhealth,
-        vacation_leave, sick_leave, emergency_leave);
-
-    res.json({msg: 'UPDATE employee by ID: ' + req.params.id});
+        res.json({msg: 'Successful UPDATE employee by ID: ' + req.params.id});
+    }
+    catch (err) {
+        res.status(400);
+        res.json({error: err.message})
+    }
 }
 
 const deleteEmployee = async (req, res) => {
@@ -69,6 +108,8 @@ const deleteEmployee = async (req, res) => {
 
 module.exports = {
     getEmployeeByName,
+    getEmployeeByEmail,
+    getEmployeeByID,
     addEmployee,
     updateEmployee,
     deleteEmployee

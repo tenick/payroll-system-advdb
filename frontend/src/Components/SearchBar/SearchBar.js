@@ -1,16 +1,55 @@
 import './SearchBar.css';
 import { useWorkspaceHeader } from '../../Hooks/useWorkspaceHeader';
+import { useState } from 'react';
+import { useAuthStatus } from '../../Hooks/useAuthStatus';
+import { useSearchEmployee } from '../../Hooks/useSearchEmployee';
 
 const SearchBar = () => {
     const { workspaceHeaderState } = useWorkspaceHeader();
-	
+	const [searchQueryState, setSearchQueryState] = useState('');
+	const { searchEmployeeState, searchEmployeeDispatch } = useSearchEmployee();
+
+	// user states
+    const { userState, authorize } = useAuthStatus();
+
+	const handleSearch = async e => {
+		if (e.key !== 'Enter') return;
+		if (!authorize()) return;
+		else {
+			console.log('searching... ' + searchQueryState);
+			console.log('authorized to search employee by name');
+
+			const response = await fetch('/api/employee/name/' + searchQueryState, {
+				method: 'GET'
+			});
+
+			if (!response.ok) {
+				console.log("error during getting all employee with name");
+				searchEmployeeDispatch({type: 'UNSET_SEARCHED_EMPLOYEE', payload: null});
+				return;
+			}
+			
+			let responseJson = await response.json();
+			console.log("employees found with name: " + searchQueryState, responseJson);
+
+			const empsResult = Array.from(responseJson.map(employee => {
+				return {
+					emp_id: employee.employee_id,
+					emp_name: employee.first_name + ' ' + employee.last_name,
+					emp_position: employee.employee_position
+				};
+			}));
+			
+			searchEmployeeDispatch({type: 'SET_SEARCHED_EMPLOYEE', payload: empsResult});
+		}
+	}
 
     return (
 		<>
 			{ workspaceHeaderState.searchEnabled && 
 				<div id="searchBar">
 					<i className="fa-solid fa-search"></i> 
-					<input type='text'></input>
+					<input type='text' onKeyDown={handleSearch} onChange={e => setSearchQueryState(e.target.value)}></input>
 				</div> }
 		</>
   	);

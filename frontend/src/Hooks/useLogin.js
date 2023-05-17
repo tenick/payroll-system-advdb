@@ -13,6 +13,7 @@ export const useLogin = () => {
     
         if (!response.ok){
             console.log('wrong email/password!');
+            return await response.json();
         }
         if (response.ok){
             let userData = await response.json();

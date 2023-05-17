@@ -1,0 +1,54 @@
+
+
+.choice-list {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancelDelete {
+    font: inherit;
+    width: 50%;
+    background-color: #d44662;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    max-width: 20em;
+}
+
+.proceedDelete {
+    font: inherit;
+    background-color: #63B83F;
+    color: white;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 20em;
+    cursor: pointer;
+    border: none;
+}
+
+.choice-list-msg {
+    width: 100%;
+    text-align: center;
+    display: block;
+    margin: 2em 0;
+}
+
+@media (max-aspect-ratio: 1/1) {
+    .choice-list {
+        flex-direction: column;
+    }
+
+    .proceedDelete {
+        width: 400px;
+        max-width: 100%;
+    }
+    .cancelDelete {
+        width: 400px;
+        max-width: 100%;
+    }
+}

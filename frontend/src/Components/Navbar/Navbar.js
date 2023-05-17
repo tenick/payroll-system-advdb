@@ -27,12 +27,15 @@ const NavBar = () => {
         let header = e.target.innerText;
         let searchEnabled = false;
         switch (header) {
-            case 'Employees':
+            case 'Employee':
                 searchEnabled = true;
             case 'Leave Requests':
                 searchEnabled = true;
             default:;
         }
+
+        if (userState.user.role == 'employee') searchEnabled = false;
+        
         dispatch({type: "SET_HEADER", payload: {header, searchEnabled}});
         e.stopPropagation();
     }
@@ -49,7 +52,7 @@ const NavBar = () => {
                         <ul>
                             {userState.user.role === 'admin' && 
                                 <>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-duotone fa-users"></i><Link to='/employee'>Employees</Link></li>
+                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-duotone fa-users"></i><Link to='/employee'>Employee</Link></li>
                                     <li onClick={setSelectedNav} ><i className="fa-solid fa-user-plus"></i><Link to='/add_employee'>Add Employee</Link></li>
                                     <li onClick={setSelectedNav} ><i className="fa-solid fa-money-check-dollar"></i><Link to='/payroll'>Payroll</Link></li>
                                     <li onClick={setSelectedNav} ><i className="fa-solid fa-user-clock"></i><Link to='/timesheet'>Time Sheet</Link></li>

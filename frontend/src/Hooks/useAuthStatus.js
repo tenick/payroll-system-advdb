@@ -8,17 +8,16 @@ export const useAuthStatus = () => {
         const response = await fetch('/api/auth/authorize', {
             method: 'GET'
         });
+        
         let result = {user: null};
         if (response.ok) {
-            result = await response.json();
+            result.user = await response.json();
             console.log("able to login! user: ", result);
-        }
-        else {
-            console.log("no authhghhhh!!");
-            result = {user: result}
         }
 
         dispatch({type: "AUTHORIZE_USER", payload: result});
+
+        return response.ok;
     }
 
     return { userState, authorize };

@@ -3,6 +3,7 @@ import './Login.css';
 import { useState } from 'react';
 import { useLogin } from '../../Hooks/useLogin';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
+import MessageBox from '../../Components/MessageBox/MessageBox'
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,10 +12,18 @@ const Login = () => {
     const { userState } = useAuthStatus();
     console.log(userState);
 
+    // message box states
+    const [messageBoxText, setMessageBoxText] = useState('');
+    const [messageBoxIsError, setMessageBoxIsError] = useState(false);
+
     const handleSubmit = async e => {
         e.preventDefault();
-        await login(email, password);
-        console.log("user: ", userState);
+        const response = await login(email, password);
+        if (typeof response?.error !== 'undefined'){
+            setMessageBoxText(response.error);
+            setMessageBoxIsError(true);
+        }
+        else console.log("user: ", userState);
     };
 
     return (
@@ -31,6 +40,8 @@ const Login = () => {
                     <label for="in_password">Password:</label>
                     <input required type="password" placeholder="Password" id="in_password" name="user_password" onChange={e => setPassword(e.target.value)} class="login-input"/>
                     <button class="login-input submit-btn">Login</button>
+
+                    <MessageBox text={messageBoxText} setText={setMessageBoxText} isError={messageBoxIsError}/>
                 </form>
             </section>
         </div>

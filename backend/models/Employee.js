@@ -15,11 +15,21 @@ class Employee {
         // defaults
         const employee_status = 'probation';
         
+        // check if email already exists
+        const foundEmail = await Employee.findByEmail(email_address.trim());
+        console.log(foundEmail);
+        if (typeof foundEmail === 'undefined' || foundEmail.length != 0)
+            throw new Error('Email already exists!');
+        
         // save userdetails tb
         const user_detail_id = await UserDetail.save(first_name, last_name, sex, contact_number);
+        console.log('added userdetail');
         const user_credential_id = await UserCredential.save(email_address, user_password);
+        console.log('added user_credential');
         const leave_id = await Contribution.save(sss, pagibig, philhealth);
+        console.log('added leave');
         const contribution_id = await Leave.save(vacation_leave, sick_leave, emergency_leave);
+        console.log('added contribution');
         
         let sql = `
             INSERT INTO Employee_tb(
@@ -50,8 +60,7 @@ class Employee {
     }
 
     static async updateById(id, gross_salary, employee_position, probation_end_date, employee_status,
-        first_name, last_name, sex, contact_number, 
-        email_address, user_password,
+        first_name, last_name, sex, contact_number,
         sss, pagibig, philhealth,
         vacation_leave, sick_leave, emergency_leave) {
         
@@ -60,7 +69,6 @@ class Employee {
 
         // update related tables
         await UserDetail.updateById(employeeData.user_detail_id, first_name, last_name, sex, contact_number);
-        await UserCredential.updateById(employeeData.user_credential_id, email_address, user_password);
         await Contribution.updateById(employeeData.contribution_id, sss, pagibig, philhealth);
         await Leave.updateById(employeeData.leave_id, vacation_leave, sick_leave, emergency_leave);
         
@@ -112,7 +120,38 @@ class Employee {
 
         const [foundEmployees, _] = await db.execute(sql);
         console.log(foundEmployees);
-        return foundEmployees;
+        
+        let employees = [];
+        for (const employee of foundEmployees){
+            const user_detail = await UserDetail.findById(employee.user_detail_id);
+            const user_credential = await UserCredential.findById(employee.user_credential_id);
+            const leave = await Contribution.findById(employee.leave_id);
+            const contribution = await Leave.findById(employee.contribution_id);
+            let fullDetailEmployee = {...employee, ...user_detail, ...user_credential, ...leave, ...contribution };
+
+            employees.push(fullDetailEmployee);
+        }
+
+        return employees;
+    }
+
+    static async findByEmail(email) {
+        let sql = `
+            SELECT *
+            FROM Employee_tb
+            WHERE user_credential_id
+            IN (SELECT user_credential_id
+            FROM UserCredential_tb 
+            WHERE email_address='${email}'
+            AND user_credential_id IN (SELECT user_credential_id FROM Employee_tb));
+        `;
+
+        const [foundEmployees, _] = await db.execute(sql);
+        let foundEmployee = foundEmployees[0];
+
+        if (typeof foundEmployee === 'undefined') foundEmployee = [];
+
+        return foundEmployee;
     }
 
     static async findById(id) {
@@ -123,7 +162,13 @@ class Employee {
         const [foundEmployees, _] = await db.execute(sql);
         const foundEmployee = foundEmployees[0];
 
-        return foundEmployee;
+        // get all related data as well
+        const user_detail = await UserDetail.findById(foundEmployee.user_detail_id);
+        const user_credential = await UserCredential.findById(foundEmployee.user_credential_id);
+        const leave = await Contribution.findById(foundEmployee.leave_id);
+        const contribution = await Leave.findById(foundEmployee.contribution_id);
+
+        return {...foundEmployee, ...user_detail, ...user_credential, ...leave, ...contribution };
     }
 }
 
