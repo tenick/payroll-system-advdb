@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 
 const authRoute = require('./routes/AuthRoute');
 const employeeRoute = require('./routes/EmployeeRoute');
+const timesheetRoute = require('./routes/TimesheetRoute');
+const payrollRoute = require('./routes/PayrollRoute');
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // routes
 app.use('/api/auth', authRoute);
 app.use('/api/employee', employeeRoute);
+app.use('/api/timesheet', timesheetRoute);
+app.use('/api/payroll', payrollRoute);
 
 // sample route with token verification and role authorization
 // app.get('/dashboard', verifyToken, authRole('admin'), (req, res) => {
