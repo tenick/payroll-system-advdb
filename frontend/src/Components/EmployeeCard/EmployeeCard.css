@@ -9,7 +9,6 @@
     box-sizing: content-box;
     box-shadow: 5px 5px 3px #00000055;
     border-radius: 10px;
-    border: solid black 1px;
     padding: .5em;
     margin: .5em 0;
     flex-wrap: wrap;

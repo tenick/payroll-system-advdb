@@ -1,16 +1,18 @@
 import './WorkspaceHeader.css';
 import SearchBar from '../SearchBar/SearchBar';
-import { useWorkspaceHeader } from '../../Hooks/useWorkspaceHeader';
+import { useNav } from '../../Hooks/useNav';
 
 const WorkspaceHeader = () => {
-  const { workspaceHeaderState } = useWorkspaceHeader();
-  
-  return (
-    <header id="workspaceHeader">
-        <h1>{ workspaceHeaderState.header }</h1>
-        <SearchBar />
-    </header>
-  );
+	const { navState } = useNav();
+
+	const searchableRoutes = ['/employee'];
+	
+	console.log(searchableRoutes.filter(route => route == navState.path).length);
+	return (
+		<header id="workspaceHeader">
+			{ searchableRoutes.filter(route => route == navState.path).length != 0 && <SearchBar /> }
+		</header>
+	);
 }
 
 export default WorkspaceHeader;

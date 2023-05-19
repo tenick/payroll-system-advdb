@@ -9,6 +9,9 @@
     justify-content: center;
 }
 
-#employee {
+.empty-section-msg {
     width: 100%;
+    text-align: center;
+    font-style: italic;
+    margin: 2em 0;
 }

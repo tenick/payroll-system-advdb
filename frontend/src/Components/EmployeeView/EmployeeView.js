@@ -7,11 +7,13 @@ import EmployeeForm from '../EmplopyeeForm/EmployeeForm';
 import MessageBox from '../MessageBox/MessageBox';
 import { useState, useEffect } from 'react';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
+import { Link, useNavigate } from 'react-router-dom';
 
 const EmployeeView = () => {
     const { employeeDetails, employeeDetailInputs } = useEmployeeDetails();
     const { selectedEmployeeState, selectedEmployeeDispatch } = useSelectedEmployee();
     const { searchEmployeeDispatch } = useSearchEmployee();
+	const navigate = useNavigate();
     
     const [employeeData, setEmployeeData] = useState(null);
 
@@ -24,6 +26,7 @@ const EmployeeView = () => {
 
     const handleCancel = () => {
         selectedEmployeeDispatch({type: 'UNSELECT_EMPLOYEE'});
+        navigate('/');
     }
 
     const handleSubmit = async e => {
@@ -110,7 +113,12 @@ const EmployeeView = () => {
         <section id="employeeView">
             <h1>Employee details:</h1>
             <hr />
-            { employeeData !== null &&
+            {
+                employeeData === null ?
+                <div className='empty-section-msg'>
+                    Select an employee first <Link to='/employee'>here...</Link>
+                </div>
+                :
                 <>
                     <EmployeeForm handleSubmit={handleSubmit} submitAction={'Edit'} defaultEmployeeDetails={ employeeData } setEmployeeDetails={ employeeDetailInputs } isSubmitDisabled={''} isInputDisabled={''} />
                     <button className='employee-form-cancel' onClick={ handleCancel } >Cancel</button> 

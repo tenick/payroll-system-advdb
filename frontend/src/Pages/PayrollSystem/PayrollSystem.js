@@ -1,15 +1,15 @@
 import Navbar from '../../Components/Navbar/Navbar';
+import { NavbarContextProvider } from '../../Components/Navbar/NavbarContext';
 import Workspace from '../../Components/Workspace/Workspace';
-import { WorkspaceHeaderContextProvider } from '../../Context/WorkspaceHeaderContext';
 
 const PayrollSystem = () => {
     
     return (
         <div id='payroll-system'>
-            <WorkspaceHeaderContextProvider>
+            <NavbarContextProvider>
                 <Navbar />
                 <Workspace />
-            </WorkspaceHeaderContextProvider>
+            </NavbarContextProvider>
         </div>
     );
 }

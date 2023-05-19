@@ -1,6 +1,28 @@
 import './EmployeeCard.css';
+import { useSelectedEmployee } from '../../Hooks/useSelectedEmployee';
+import { useNavigate } from 'react-router-dom';
 
-const EmployeeCard = ({emp_id, emp_name, emp_position, handleViewEmpPayroll, handleViewEmpTimeSheet, handleEditEmp, handleDeleteEmp}) => {
+const EmployeeCard = ({emp_id, emp_name, emp_position}) => {
+	const navigate = useNavigate();
+    const { selectedEmployeeState, selectedEmployeeDispatch} = useSelectedEmployee();
+	
+	const handleEditEmp = emp_id => {
+		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'edit'}})
+		navigate("/edit_employee");
+	}
+
+    const handleDeleteEmp = emp_id => {
+		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'delete'}})
+	}
+
+	const handleViewEmpPayroll = emp_id => {
+		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'edit'}})
+	}
+
+    const handleViewEmpTimeSheet = emp_id => {
+		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'delete'}})
+	}
+
   	return (
 		<div className='employee-card'>
 			<input type="hidden" value={emp_id} />

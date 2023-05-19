@@ -1,16 +1,15 @@
 import './Navbar.css';
 import { useState } from 'react';
 import Backdrop from "../Backdrop/Backdrop";
+import Navlink from "./Navlink";
 import { Link } from 'react-router-dom';
 import { useLogout } from '../../Hooks/useLogout';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
-import { useWorkspaceHeader } from '../../Hooks/useWorkspaceHeader';
 
 const NavBar = () => {
     const [navState, setNavState] = useState({hide: true, navState: 'navHide', backdropState: 'backdrop-nav-hide'});
     const logout = useLogout();
     const { userState } = useAuthStatus();
-    const { dispatch } = useWorkspaceHeader();
 
     const navToggle = () => {
         console.log(navState);
@@ -22,24 +21,6 @@ const NavBar = () => {
         e.stopPropagation();
     };
 
-    const setSelectedNav = e => {
-        console.log(e.target.innerText);
-        let header = e.target.innerText;
-        let searchEnabled = false;
-        switch (header) {
-            case 'Employee':
-                searchEnabled = true;
-            case 'Leave Requests':
-                searchEnabled = true;
-            default:;
-        }
-
-        if (userState.user.role == 'employee') searchEnabled = false;
-        
-        dispatch({type: "SET_HEADER", payload: {header, searchEnabled}});
-        e.stopPropagation();
-    }
-
     return (
         <div>
             <Backdrop className={ navState.backdropState } onClick={ navToggle }>
@@ -50,22 +31,16 @@ const NavBar = () => {
                             <span>Payroll System</span>
                         </header>
                         <ul>
+                            <Navlink className={'fa-solid fa-duotone fa-users'} path='/employee' innerText='Employee'></Navlink>
                             {userState.user.role === 'admin' && 
                                 <>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-duotone fa-users"></i><Link to='/employee'>Employee</Link></li>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-user-plus"></i><Link to='/add_employee'>Add Employee</Link></li>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-money-check-dollar"></i><Link to='/payroll'>Payroll</Link></li>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-user-clock"></i><Link to='/timesheet'>Time Sheet</Link></li>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-house-user"></i><Link to='/leave_requests'>Leave Requests</Link></li>
+                                    <Navlink className={'fa-solid fa-user-plus'} path='/add_employee' innerText='Add Employee'></Navlink>
+                                    <Navlink className={'fa-solid fa-pencil'} path='/edit_employee' innerText='Edit Employee'></Navlink>
                                 </>
                             }
-                            {userState.user.role === 'employee' && 
-                                <>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-money-check-dollar"></i><Link to='/payroll'>Payroll</Link></li>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-user-clock"></i><Link to='/timesheet'>Time Sheet</Link></li>
-                                    <li onClick={setSelectedNav} ><i className="fa-solid fa-house-user"></i><Link to='/leave_requests'>Leave Requests</Link></li>
-                                </>
-                            }
+                            <Navlink className={'fa-solid fa-money-check-dollar'} path='/payroll' innerText='Payroll'></Navlink>
+                            <Navlink className={'fa-solid fa-user-clock'} path='/timesheet' innerText='Time Sheet'></Navlink>
+                            <Navlink className={'fa-solid fa-house-user'} path='/leave_requests' innerText='Leave Requests'></Navlink>
                         </ul>
                         <ul>
                             <li>{userState.user.role}</li>

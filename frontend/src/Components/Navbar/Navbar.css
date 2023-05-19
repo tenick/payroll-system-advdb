@@ -2,6 +2,21 @@
 a {
     color: white;
     text-decoration: none;
+
+    user-select: none; /* supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.active-link {
+    background-color: #63B83F;
+    color: white;
+}
+#nav-container > .navMain > ul:nth-of-type(1) > li > .active-link:hover {
+    cursor: pointer;
+    color: white;
 }
 
 #nav-container {

@@ -4,24 +4,18 @@ export const NavbarContext = createContext();
 
 export const navbarReducer = (state, action) => {
     switch (action.type) {
-        case 'PUSH':
-            return [
-                ...state, action
-            ];
-        case 'POP':
-            return state.length == 0 ? [] : state.slice(0, -1);
+        case 'SET_SELECTED_LINK':
+            return action.payload;
         default:
             return state;
     }
 }
 
 export const NavbarContextProvider = ({children}) => {
-    const [state, dispatch] = useReducer(navbarReducer, []);
-
-    // usage: dispatch({type: "PUSH", payload: []})
+    const [navState, navDispatch] = useReducer(navbarReducer, {path: null});
 
     return (
-        <NavbarContext.Provider value={{state, dispatch}}>
+        <NavbarContext.Provider value={{navState, navDispatch}}>
             { children }
         </NavbarContext.Provider>
     )

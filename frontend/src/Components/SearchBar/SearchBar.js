@@ -1,11 +1,9 @@
 import './SearchBar.css';
-import { useWorkspaceHeader } from '../../Hooks/useWorkspaceHeader';
 import { useState } from 'react';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
 import { useSearchEmployee } from '../../Hooks/useSearchEmployee';
 
 const SearchBar = () => {
-    const { workspaceHeaderState } = useWorkspaceHeader();
 	const [searchQueryState, setSearchQueryState] = useState('');
 	const { searchEmployeeState, searchEmployeeDispatch } = useSearchEmployee();
 
@@ -46,11 +44,10 @@ const SearchBar = () => {
 
     return (
 		<>
-			{ workspaceHeaderState.searchEnabled && 
-				<div id="searchBar">
-					<i className="fa-solid fa-search"></i> 
-					<input type='text' onKeyDown={handleSearch} onChange={e => setSearchQueryState(e.target.value)}></input>
-				</div> }
+			<div id="searchBar">
+				<i className="fa-solid fa-search"></i> 
+				<input type='text' onKeyDown={handleSearch} onChange={e => setSearchQueryState(e.target.value)}></input>
+			</div>
 		</>
   	);
 }

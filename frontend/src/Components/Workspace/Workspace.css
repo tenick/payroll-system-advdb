@@ -24,7 +24,13 @@
     padding: 1.5em;
     max-width: 1200px;
     box-sizing: border-box;
+    width: 100%;
 }
+
+#workspace > section > hr {
+    margin: 1em 0em;
+}
+
 
 
 @media (max-aspect-ratio: 8 / 5){
