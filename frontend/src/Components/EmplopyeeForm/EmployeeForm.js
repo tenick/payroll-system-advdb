@@ -19,7 +19,7 @@ const EmployeeForm = ({handleSubmit, submitAction, defaultEmployeeDetails, setEm
                     <input required type="text" defaultValue={defaultEmployeeDetails?.contact_number} disabled={isInputDisabled} name="contact_number" onChange={e => setEmployeeDetails.setContact_number(e.target.value)} />
                 </div>
                 
-                { submitAction?.toLowerCase() !== 'edit' && 
+                { submitAction?.toLowerCase() !== 'edit' && false &&
                     <div class='add-emp-usercredentials'>
                         <h1>User Credentials:</h1>
                         <label for="in_email">Email Address:</label>
@@ -67,7 +67,7 @@ const EmployeeForm = ({handleSubmit, submitAction, defaultEmployeeDetails, setEm
                     <input required type="number" defaultValue={defaultEmployeeDetails?.emergency_leave} disabled={isInputDisabled} name="emergency_leave" onChange={e => setEmployeeDetails.setEmergency_leave(e.target.value)} />
                 </div>
             </div>
-            {isSubmitDisabled === '' && <button className='employee-form-submit'>{submitAction}</button>}
+            {!isSubmitDisabled && <button className='employee-form-submit'>{submitAction}</button>}
         </form>
     )
 }

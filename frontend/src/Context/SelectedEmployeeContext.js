@@ -1,4 +1,5 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
+import { useAuthStatus } from '../Hooks/useAuthStatus';
 
 export const SelectedEmployeeContext = createContext();
 
@@ -15,6 +16,13 @@ export const selectedEmployeeReducer = (state, action) => {
 
 export const SelectedEmployeeContextProvider = ({children}) => {
     const [selectedEmployeeState, selectedEmployeeDispatch] = useReducer(selectedEmployeeReducer, {employeeID: null});
+    const { userState } = useAuthStatus();
+
+    useEffect(() => {
+        if (userState.user.role === 'employee'){
+		    selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: userState.user.id, action: 'view'}})
+        }
+    }, []);
 
     return (
         <SelectedEmployeeContext.Provider value={{selectedEmployeeState, selectedEmployeeDispatch}}>

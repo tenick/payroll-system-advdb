@@ -5,15 +5,15 @@ import { useSearchEmployee } from '../../Hooks/useSearchEmployee';
 import { useEmployeeDetails } from '../../Hooks/useEmployeeDetails';
 import EmployeeForm from '../EmplopyeeForm/EmployeeForm';
 import MessageBox from '../MessageBox/MessageBox';
+import Navlink from '../Navbar/Navlink';
 import { useState, useEffect } from 'react';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
-import { Link, useNavigate } from 'react-router-dom';
+import { reformatDateStringToHTMLInputDateTypeString } from '../../Utils/Utility';
 
 const EmployeeView = () => {
     const { employeeDetails, employeeDetailInputs } = useEmployeeDetails();
     const { selectedEmployeeState, selectedEmployeeDispatch } = useSelectedEmployee();
     const { searchEmployeeDispatch } = useSearchEmployee();
-	const navigate = useNavigate();
     
     const [employeeData, setEmployeeData] = useState(null);
 
@@ -26,7 +26,6 @@ const EmployeeView = () => {
 
     const handleCancel = () => {
         selectedEmployeeDispatch({type: 'UNSELECT_EMPLOYEE'});
-        navigate('/');
     }
 
     const handleSubmit = async e => {
@@ -50,10 +49,7 @@ const EmployeeView = () => {
             sick_leave: employeeDetails.sick_leave === '' ? employeeData.sick_leave : employeeDetails.sick_leave,
             emergency_leave: employeeDetails.emergency_leave === '' ? employeeData.emergency_leave : employeeDetails.emergency_leave
         }
-        // reformat so that input type='Data' can be set with default value of this new format
-        let myDate = new Date(updatedEmployeeDetails.probation_end_date);
-        updatedEmployeeDetails.probation_end_date = `${String(myDate.getFullYear()).padStart(4, '0')}-${String(myDate.getMonth()).padStart(2, '0')}-${String(myDate.getDate()).padStart(2, '0')}`;
-        
+
         const response = await fetch('/api/employee/' + selectedEmployeeState.employeeID, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
@@ -86,23 +82,24 @@ const EmployeeView = () => {
         const fetchData = async () => {
             if (!authorize()) return;
 
-            console.log('authorized to fetch employee');
+            console.log('authorized to fetch employee ', userState, "employee state: ", selectedEmployeeState);
+            let employeeID = selectedEmployeeState.employeeID;
+            if (employeeID === null && userState.user.role === 'employee') employeeID = userState.user.id;
 
-            const response = await fetch('/api/employee/id/' + selectedEmployeeState.employeeID, {
+            const response = await fetch('/api/employee/id/' + employeeID, {
                 method: 'GET'
             });
 
             let responseJson = await response.json();
             
             if (typeof responseJson.error !== 'undefined'){
-                console.log("id " + selectedEmployeeState.employeeID + " doesn't exist!");
+                console.log("id " + employeeID + " doesn't exist!");
                 return;
             }
             
             delete responseJson.user_password;
-            let myDate = new Date(responseJson.probation_end_date);
-            // reformat so that input type='Data' can be set with default value of this new format
-            responseJson.probation_end_date = `${String(myDate.getFullYear()).padStart(4, '0')}-${String(myDate.getMonth()).padStart(2, '0')}-${String(myDate.getDate()).padStart(2, '0')}`;
+
+            responseJson.probation_end_date = reformatDateStringToHTMLInputDateTypeString(responseJson.probation_end_date);
             setEmployeeData(responseJson);
         };
 
@@ -116,12 +113,25 @@ const EmployeeView = () => {
             {
                 employeeData === null ?
                 <div className='empty-section-msg'>
-                    Select an employee first <Link to='/employee'>here...</Link>
+                    Select an employee first <Navlink className={'genericLink'} path='/employee' innerText={'here...'} isGenericLink >here...</Navlink>
                 </div>
                 :
                 <>
-                    <EmployeeForm handleSubmit={handleSubmit} submitAction={'Edit'} defaultEmployeeDetails={ employeeData } setEmployeeDetails={ employeeDetailInputs } isSubmitDisabled={''} isInputDisabled={''} />
-                    <button className='employee-form-cancel' onClick={ handleCancel } >Cancel</button> 
+                    {
+                        userState.user.role === 'employee' &&
+                        <EmployeeForm handleSubmit={handleSubmit} submitAction={'Edit'} defaultEmployeeDetails={ employeeData } setEmployeeDetails={ employeeDetailInputs } isInputDisabled isSubmitDisabled />
+                    }
+
+                    {
+                        userState.user.role === 'admin' &&
+                        <>
+                            <EmployeeForm handleSubmit={handleSubmit} submitAction={'Edit'} defaultEmployeeDetails={ employeeData } setEmployeeDetails={ employeeDetailInputs } />
+                            <Navlink runBefore={handleCancel} className={'employee-form-cancel'} path='/employee' isGenericLink >
+                                Cancel
+                            </Navlink>
+                        </>
+                    }
+                    
                 </> 
             }
             <MessageBox text={messageBoxText} setText={setMessageBoxText} isError={messageBoxIsError} />

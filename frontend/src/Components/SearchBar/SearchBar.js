@@ -2,10 +2,12 @@ import './SearchBar.css';
 import { useState } from 'react';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
 import { useSearchEmployee } from '../../Hooks/useSearchEmployee';
+import { useSelectedEmployee } from '../../Hooks/useSelectedEmployee';
 
 const SearchBar = () => {
 	const [searchQueryState, setSearchQueryState] = useState('');
 	const { searchEmployeeState, searchEmployeeDispatch } = useSearchEmployee();
+    const { selectedEmployeeDispatch} = useSelectedEmployee();
 
 	// user states
     const { userState, authorize } = useAuthStatus();
@@ -14,6 +16,9 @@ const SearchBar = () => {
 		if (e.key !== 'Enter') return;
 		if (!authorize()) return;
 		else {
+			selectedEmployeeDispatch({type: "UNSELECT_EMPLOYEE"})
+
+
 			console.log('searching... ' + searchQueryState);
 			console.log('authorized to search employee by name');
 

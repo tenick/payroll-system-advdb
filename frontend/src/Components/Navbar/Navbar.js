@@ -26,11 +26,11 @@ const NavBar = () => {
             <Backdrop className={ navState.backdropState } onClick={ navToggle }>
                 <nav id="nav-container" className={ navState.navState } onClick={ navbarClick }>
                     <div className="navMain">
-                        <header>
+                        <header id='navHeader'>
                             <i className="fa-solid fa-file-invoice-dollar"></i>
                             <span>Payroll System</span>
                         </header>
-                        <ul>
+                        <ul id='navLinks'>
                             <Navlink className={'fa-solid fa-duotone fa-users'} path='/employee' innerText='Employee'></Navlink>
                             {userState.user.role === 'admin' && 
                                 <>
@@ -40,9 +40,14 @@ const NavBar = () => {
                             }
                             <Navlink className={'fa-solid fa-money-check-dollar'} path='/payroll' innerText='Payroll'></Navlink>
                             <Navlink className={'fa-solid fa-user-clock'} path='/timesheet' innerText='Time Sheet'></Navlink>
+                            {userState.user.role === 'employee' && 
+                                <>
+                                    <Navlink className={'fa-solid fa-user-plus'} path='/add_timesheet' innerText='Add Timesheet'></Navlink>
+                                </>
+                            }
                             <Navlink className={'fa-solid fa-house-user'} path='/leave_requests' innerText='Leave Requests'></Navlink>
                         </ul>
-                        <ul>
+                        <ul id='navLast'>
                             <li>{userState.user.role}</li>
                             <li>
                                 <Link to='/' onClick={logout}>Logout</Link>

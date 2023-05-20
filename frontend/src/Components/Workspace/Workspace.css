@@ -22,15 +22,21 @@
     color: black;
     border-radius: 20px;
     padding: 1.5em;
-    max-width: 1200px;
+    max-width: var(--section-max-width);
     box-sizing: border-box;
     width: 100%;
 }
 
-#workspace > section > hr {
+hr {
     margin: 1em 0em;
 }
 
+.empty-section-msg {
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    margin: 2em 0;
+}
 
 
 @media (max-aspect-ratio: 8 / 5){

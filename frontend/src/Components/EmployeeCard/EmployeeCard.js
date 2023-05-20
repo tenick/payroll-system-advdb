@@ -1,14 +1,12 @@
 import './EmployeeCard.css';
 import { useSelectedEmployee } from '../../Hooks/useSelectedEmployee';
-import { useNavigate } from 'react-router-dom';
+import Navlink from "../Navbar/Navlink";
 
 const EmployeeCard = ({emp_id, emp_name, emp_position}) => {
-	const navigate = useNavigate();
-    const { selectedEmployeeState, selectedEmployeeDispatch} = useSelectedEmployee();
+    const { selectedEmployeeDispatch} = useSelectedEmployee();
 	
 	const handleEditEmp = emp_id => {
 		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'edit'}})
-		navigate("/edit_employee");
 	}
 
     const handleDeleteEmp = emp_id => {
@@ -16,11 +14,11 @@ const EmployeeCard = ({emp_id, emp_name, emp_position}) => {
 	}
 
 	const handleViewEmpPayroll = emp_id => {
-		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'edit'}})
+		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'view'}})
 	}
-
+	
     const handleViewEmpTimeSheet = emp_id => {
-		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'delete'}})
+		selectedEmployeeDispatch({type: "SELECT_EMPLOYEE", payload: {id: emp_id, action: 'view'}})
 	}
 
   	return (
@@ -33,18 +31,18 @@ const EmployeeCard = ({emp_id, emp_name, emp_position}) => {
 				{emp_position}
 			</div>
 			<div className='employee-actions'>
-				<div className='employee-action payroll-action' onClick={handleViewEmpPayroll}>
+				<Navlink runBefore={() => handleViewEmpPayroll(emp_id)} className={'employee-action payroll-action'} path='/payroll' isGenericLink >
 					<i className='fa-solid fa-money-check-dollar'></i>
 					<span>Payroll</span>
-				</div>
-				<div className='employee-action timesheet-action' onClick={handleViewEmpTimeSheet}>
+				</Navlink>
+				<Navlink runBefore={() => handleViewEmpTimeSheet(emp_id)} className={'employee-action timesheet-action'} path='/timesheet' isGenericLink >
 					<i className='fa-solid fa-user-clock'></i>
-					<span>Time Sheet</span>
-				</div>
-				<div className='employee-action edit-action' onClick={() => handleEditEmp(emp_id)}>
+					<span>Time sheet</span>
+				</Navlink>
+				<Navlink runBefore={() => handleEditEmp(emp_id)} className={'employee-action edit-action'} path='/edit_employee' isGenericLink >
 					<i className='fa-solid fa-pencil'></i>
 					<span>Edit</span>
-				</div>
+				</Navlink>
 				<div className='employee-action delete-action' onClick={() => handleDeleteEmp(emp_id)}>
 					<i className='fa-solid fa-trash'></i>
 					<span>Delete</span>

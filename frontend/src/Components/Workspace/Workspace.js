@@ -8,11 +8,13 @@ import EmployeeView from '../EmployeeView/EmployeeView';
 import WorkspaceHeader from '../WorkspaceHeader/WorkspaceHeader';
 import Payroll from '../Payroll/Payroll';
 import TimeSheet from '../TimeSheet/TimeSheet';
+import LeaveRequests from '../LeaveRequests/LeaveRequests';
 import { SelectedEmployeeContextProvider } from '../../Context/SelectedEmployeeContext';
 import { useNav } from '../../Hooks/useNav';
 
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { SearchEmployeeContextProvider } from '../../Context/SearchEmployeeContext';
+import AddTimesheet from '../AddTimesheet/AddTimesheet';
 
 const Workspace = () => {
     const { userState } = useAuthStatus();
@@ -24,16 +26,16 @@ const Workspace = () => {
             <section id="workspace">
                 <WorkspaceHeader />
                 <Routes>
+                    <Route
+                        path='/'
+                        element={ userState.user === null ? <Navigate to='/' /> : <Navigate to='/employee' />}
+                    />
+                    <Route
+                        path='employee'
+                        element={ userState.user === null ? <Navigate to='/' /> : <Employee />}
+                    />
                     {userState.user.role === 'admin' && 
                         <>
-                            <Route
-                                path='/'
-                                element={ userState.user === null ? <Navigate to='/' /> : <Navigate to='/employee' />}
-                            />
-                            <Route
-                                path='employee'
-                                element={ userState.user === null ? <Navigate to='/' /> : <Employee />}
-                            />
                             <Route
                                 path='add_employee'
                                 element={ userState.user === null ? <Navigate to='/' /> : <AddEmployee />}
@@ -42,16 +44,28 @@ const Workspace = () => {
                                 path='edit_employee'
                                 element={ userState.user === null ? <Navigate to='/' /> : <EmployeeView />}
                             />
+                        </>
+                    }
+                    <Route
+                        path='payroll'
+                        element={ userState.user === null ? <Navigate to='/' /> : <Payroll />}
+                    />
+                    <Route
+                        path='timesheet'
+                        element={ userState.user === null ? <Navigate to='/' /> : <TimeSheet />}
+                    />
+                    {userState.user.role === 'employee' && 
+                        <>
                             <Route
-                                path='payroll'
-                                element={ userState.user === null ? <Navigate to='/' /> : <Payroll />}
-                            />
-                            <Route
-                                path='timesheet'
-                                element={ userState.user === null ? <Navigate to='/' /> : <TimeSheet />}
+                                path='add_timesheet'
+                                element={ userState.user === null ? <Navigate to='/' /> : <AddTimesheet />}
                             />
                         </>
                     }
+                    <Route
+                        path='leave_requests'
+                        element={ userState.user === null ? <Navigate to='/' /> : <LeaveRequests />}
+                    />
                     <Route
                         path='*'
                         element={ <Navigate to='/' /> }

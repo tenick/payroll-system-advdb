@@ -43,7 +43,7 @@ const AddEmployee = () => {
         <section id="addEmployee">
             <h1>Add employee:</h1>
             <hr />
-            <EmployeeForm handleSubmit={handleSubmit} submitAction={'Submit'} isSubmitDisabled={''} setEmployeeDetails={employeeDetailInputs} isInputDisabled={''} />
+            <EmployeeForm handleSubmit={handleSubmit} submitAction={'Submit'} setEmployeeDetails={employeeDetailInputs} />
             <MessageBox text={messageBoxText} setText={setMessageBoxText} isError={messageBoxIsError} />
         </section>
     );

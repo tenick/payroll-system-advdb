@@ -9,4 +9,6 @@
     width: 100%;
     margin-top: 1em;
     cursor: pointer;
+    display: block;
+    text-align: center;
 }

@@ -1,41 +1,59 @@
 import './Employee.css';
 
+import { useAuthStatus } from '../../Hooks/useAuthStatus';
 import { useSelectedEmployee } from '../../Hooks/useSelectedEmployee';
 import { useSearchEmployee } from '../../Hooks/useSearchEmployee';
 import EmployeeCard from '../EmployeeCard/EmployeeCard';
-import { useNav } from '../../Hooks/useNav';
+import EmployeeDelete from '../EmployeeDelete/EmployeeDelete';
+import EmployeeView from '../EmployeeView/EmployeeView';
 
 const Employee = () => {
-	const { navState, navDispatch } = useNav();
+    const { userState } = useAuthStatus();
+	const { selectedEmployeeState } = useSelectedEmployee();
+	const { searchEmployeeState } = useSearchEmployee();
 
-
-	const { searchEmployeeState, searchEmployeeDispatch } = useSearchEmployee();
 
 	return (
 		<section id='employee'>
-			<h1>Employee:</h1>
-			<hr />
 			{
-				searchEmployeeState.length === 0 ? 
-				<div className='empty-section-msg'>
-					No employees...
-				</div> 
-				: 
+				selectedEmployeeState.action === 'delete' && <EmployeeDelete />
+			}
+			{
+				selectedEmployeeState.action !== 'delete' &&
 				<>
-					<div className='employee-list'>
-					{ 
-						searchEmployeeState.map(employee => 
-							<EmployeeCard key={employee.emp_id} emp_id={employee.emp_id} emp_name={employee.emp_name} emp_position={employee.emp_position} />
-						) 
+					{
+						userState.user.role === 'employee' ?
+						<>
+							<EmployeeView />
+						</>
+						:
+						<>
+							<h1>Employee:</h1>
+							<hr />
+							{
+								searchEmployeeState.length === 0 ? 
+								<div className='empty-section-msg'>
+									No employees...
+								</div> 
+								: 
+								<>
+									<div className='employee-list'>
+									{ 
+										searchEmployeeState.map(employee => 
+											<EmployeeCard key={employee.emp_id} emp_id={employee.emp_id} emp_name={employee.emp_name} emp_position={employee.emp_position} />
+										) 
+									}
+									</div>
+									<hr />
+									<div className='employee-search-result-count'>
+										Found {searchEmployeeState.length} Employee{searchEmployeeState.length > 1 && 's'}
+									</div>
+								</>
+							}
+						</>
 					}
-					</div>
-					<hr />
-					<div className='employee-search-result-count'>
-						Found {searchEmployeeState.length} Employee{searchEmployeeState.length > 1 && 's'}
-					</div>
 				</>
 			}
-			
 		</section>
 	);
 }
