@@ -71,7 +71,8 @@ CREATE TABLE LeaveRequests_tb (
 );
 
 CREATE TABLE Timesheet_tb (
-    timesheet_id VARCHAR(10) PRIMARY KEY NOT NULL UNIQUE,
+    timesheet_id int AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    timesheet_csv_string VARCHAR(300) NOT NULL,
     start_date Date NOT NULL,
     end_date Date NOT NULL,
     worked_hours int NOT NULL,

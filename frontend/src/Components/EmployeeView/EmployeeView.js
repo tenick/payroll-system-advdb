@@ -86,6 +86,8 @@ const EmployeeView = () => {
             let employeeID = selectedEmployeeState.employeeID;
             if (employeeID === null && userState.user.role === 'employee') employeeID = userState.user.id;
 
+			if (employeeID === null) return;
+            
             const response = await fetch('/api/employee/id/' + employeeID, {
                 method: 'GET'
             });

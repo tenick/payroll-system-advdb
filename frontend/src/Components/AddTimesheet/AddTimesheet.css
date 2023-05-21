@@ -1,28 +1,2 @@
 
-.timesheetPreview {
-    max-width: calc(var(--section-max-width)/1.5);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    overflow: scroll;
-}
 
-.timesheetPreview .timesheetPreviewRow:nth-child(even)  {
-    background-color: gray;
-}
-
-.timesheetPreviewRow {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-}
-
-
-.timesheetPreviewCell {
-    background-color: inherit;
-    word-wrap: none;
-    word-break:keep-all;
-    width: 100%;
-    text-align: center;
-}

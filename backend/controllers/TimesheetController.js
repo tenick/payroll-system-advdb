@@ -3,14 +3,14 @@ const Timesheet = require('../models/Timesheet');
 const addTimesheet = async (req, res) => {
     try {
         const {
+            timesheet_csv_string,
             start_date,
             end_date,
             worked_hours,
             payroll_generated,
-            upload_date,
-            employee_id } = req.body;
+            upload_date } = req.body;
     
-        const newTimesheetID = await Timesheet.addTimesheet(start_date, end_date, worked_hours, payroll_generated, upload_date, employee_id);
+        const newTimesheetID = await Timesheet.save(timesheet_csv_string, start_date, end_date, worked_hours, payroll_generated, upload_date, req.params.employee_id);
         res.json({msg: 'POST new timesheet ID', id: newTimesheetID});
     }
     catch (err){

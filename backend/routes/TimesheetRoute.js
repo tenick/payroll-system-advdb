@@ -4,9 +4,9 @@ const { addTimesheet, getTimesheetsByEmpId } = require('../controllers/Timesheet
 const router = express.Router()
 
 // Login an admin/employee
-router.post('/', addTimesheet);
+router.post('/:employee_id', addTimesheet);
 
 // check if user authorized
-router.get('/:id', getTimesheetsByEmpId);
+router.get('/:employee_id', getTimesheetsByEmpId);
 
 module.exports = router;
