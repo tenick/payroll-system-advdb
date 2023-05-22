@@ -19,6 +19,29 @@ const addTimesheet = async (req, res) => {
     }
 }
 
+const updateTimesheetByEmpAndTimesheetId = async (req, res) => {
+    try {
+        const foundTimesheets = await Timesheet.updateByEmpAndTimesheetId(req.params.employee_id, req.body.timesheet_id, req.body.payroll_generated);
+        res.status(200);
+        res.json(foundTimesheets);
+    }
+    catch(err) {
+        res.status(400);
+        res.json({error: err.message});
+    }
+}
+
+const getTimesheetById = async (req, res) => {
+    try {
+        const foundTimesheet = await Timesheet.findById(req.params.timesheet_id);
+        res.json(foundTimesheet);
+    }
+    catch(err) {
+        res.status(400);
+        res.json({error: err.message});
+    }
+}
+
 const getTimesheetsByEmpId = async (req, res) => {
     try {
         const foundTimesheets = await Timesheet.findByEmpId(req.params.employee_id);
@@ -32,5 +55,7 @@ const getTimesheetsByEmpId = async (req, res) => {
 
 module.exports = {
     addTimesheet,
+    updateTimesheetByEmpAndTimesheetId,
+    getTimesheetById,
     getTimesheetsByEmpId
 }

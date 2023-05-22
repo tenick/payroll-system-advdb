@@ -1,0 +1,7 @@
+.is_payroll_generated {
+    color: green;
+}
+
+.is_payroll_not_generated {
+    color: red;
+}

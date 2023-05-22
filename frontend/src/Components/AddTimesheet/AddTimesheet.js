@@ -118,7 +118,7 @@ const AddTimesheet = () => {
                         <h1 className='tableLabel'>Summary:</h1>
                         <TimesheetSummary timesheetSummaryDataState={timesheetSummaryDataState} />
 
-                        <button className='employee-form-submit'>Upload timesheet</button>
+                        <button className='form-submit'>Upload timesheet</button>
                     </>
                     :
                     timesheetCsvDataState &&

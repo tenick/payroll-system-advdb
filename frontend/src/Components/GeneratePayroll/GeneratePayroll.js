@@ -1,22 +1,20 @@
-import './TimeSheet.css';
-
-import Navlink from '../Navbar/Navlink';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
-import TimesheetsView from './TimesheetsView';
 import { useTimesheet } from '../../Hooks/useTimesheet';
+import TimesheetsView from '../TimeSheet/TimesheetsView';
+import Navlink from '../Navbar/Navlink';
 
-const TimeSheet = () => {
+const GeneratePayroll = () => {
     const { userState } = useAuthStatus();
 	const { employeeTimesheetsData, setEmployeeTimesheetsData } = useTimesheet();
 
-  	return (
-		<section id="timesheet">
-			<h1>Timesheet:</h1>
+    return (
+        <section id="timesheet">
+			<h1>Generate Payroll:</h1>
             <hr />
 			{
 				employeeTimesheetsData !== null  ?
 				<>
-					<TimesheetsView employeeTimesheetsData={employeeTimesheetsData} setEmployeeTimesheetsData={setEmployeeTimesheetsData} />
+					<TimesheetsView employeeTimesheetsData={employeeTimesheetsData} setEmployeeTimesheetsData={setEmployeeTimesheetsData} isForPayrollGeneration />
 				</>
 				:
 				<>
@@ -38,7 +36,7 @@ const TimeSheet = () => {
 			}
 			
 		</section>
-  	);
+    )
 }
 
-export default TimeSheet;
+export default GeneratePayroll;

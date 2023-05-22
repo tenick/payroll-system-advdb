@@ -15,6 +15,7 @@ import { useNav } from '../../Hooks/useNav';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { SearchEmployeeContextProvider } from '../../Context/SearchEmployeeContext';
 import AddTimesheet from '../AddTimesheet/AddTimesheet';
+import GeneratePayroll from '../GeneratePayroll/GeneratePayroll';
 
 const Workspace = () => {
     const { userState } = useAuthStatus();
@@ -50,6 +51,12 @@ const Workspace = () => {
                         path='payroll'
                         element={ userState.user === null ? <Navigate to='/' /> : <Payroll />}
                     />
+                    {userState.user.role === 'admin' && 
+                        <Route
+                            path='generate_payroll'
+                            element={ userState.user === null ? <Navigate to='/' /> : <GeneratePayroll />}
+                        />
+                    }
                     <Route
                         path='timesheet'
                         element={ userState.user === null ? <Navigate to='/' /> : <TimeSheet />}

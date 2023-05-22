@@ -128,7 +128,7 @@ const EmployeeView = () => {
                         userState.user.role === 'admin' &&
                         <>
                             <EmployeeForm handleSubmit={handleSubmit} submitAction={'Edit'} defaultEmployeeDetails={ employeeData } setEmployeeDetails={ employeeDetailInputs } />
-                            <Navlink runBefore={handleCancel} className={'employee-form-cancel'} path='/employee' isGenericLink >
+                            <Navlink runBefore={handleCancel} className={'form-cancel'} path='/employee' isGenericLink >
                                 Cancel
                             </Navlink>
                         </>

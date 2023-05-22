@@ -3,10 +3,10 @@ const { addPayroll, getPayrollsByEmpId } = require('../controllers/PayrollContro
 
 const router = express.Router();
 
-// Login an admin/employee
+// add a payroll
 router.post('/', addPayroll);
 
-// check if user authorized
-router.get('/:id', getPayrollsByEmpId);
+// get all payrolls by employee id
+router.get('/:employee_id', getPayrollsByEmpId);
 
 module.exports = router;

@@ -1,16 +1,20 @@
 const db = require('../config/db');
 
 class Payroll {
-    static async save(creation_date, net_salary, employee_id) {
+    static async save(payroll_description, creation_date, gross_salary, timesheet_id, employee_id) {
         let sql = `
             INSERT INTO Payroll_tb(
+                payroll_description,
                 creation_date,
-                net_salary,
+                gross_salary,
+                timesheet_id,
                 employee_id
             )
             VALUES(
+                '${payroll_description}',
                 '${creation_date}',
-                '${net_salary}',
+                '${gross_salary}',
+                '${timesheet_id}',
                 '${employee_id}'
             )
         `;
@@ -24,7 +28,7 @@ class Payroll {
         let sql = `
             SELECT * FROM Payroll_tb WHERE employee_id='${employee_id}'
         `;
-
+        
         const [foundPayrolls, _] = await db.execute(sql);
         console.log("payrolls, ", foundPayrolls);
 

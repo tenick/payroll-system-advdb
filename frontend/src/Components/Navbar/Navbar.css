@@ -48,7 +48,28 @@ a {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    overflow: scroll;
 }
+
+#nav-container > .navMain::-webkit-scrollbar {
+    width: .5em;
+    height: .5em;
+}
+/* Track */
+#nav-container > .navMain::-webkit-scrollbar-track {
+    background: black;
+}
+
+/* Handle */
+#nav-container > .navMain::-webkit-scrollbar-thumb {
+    background: #444;
+}
+
+/* Handle on hover */
+#nav-container > .navMain::-webkit-scrollbar-thumb:hover {
+    background: #222;
+}
+
 
 
 #navHeader {

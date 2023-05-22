@@ -92,9 +92,12 @@ CREATE TABLE Tax_tb (
 
 CREATE TABLE Payroll_tb (
     payroll_id int AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    payroll_description VARCHAR(100) NOT NULL,
     creation_date DATE NOT NULL,
-    net_salary decimal(15,4) NOT NULL,
+    gross_salary decimal(15,4) NOT NULL,
     
+    timesheet_id int,
     employee_id int NOT NULL,
+    FOREIGN KEY (timesheet_id) REFERENCES Timesheet_tb(timesheet_id),
     FOREIGN KEY (employee_id) REFERENCES Employee_tb(employee_id)
 );

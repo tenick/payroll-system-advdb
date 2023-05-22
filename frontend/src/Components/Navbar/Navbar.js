@@ -39,6 +39,11 @@ const NavBar = () => {
                                 </>
                             }
                             <Navlink className={'fa-solid fa-money-check-dollar'} path='/payroll' innerText='Payroll'></Navlink>
+                            {userState.user.role === 'admin' && 
+                                <>
+                                    <Navlink className={'fa-solid fa-file-invoice-dollar'} path='/generate_payroll' innerText='Generate Payroll'></Navlink>
+                                </>
+                            }
                             <Navlink className={'fa-solid fa-user-clock'} path='/timesheet' innerText='Time Sheet'></Navlink>
                             {userState.user.role === 'employee' && 
                                 <>

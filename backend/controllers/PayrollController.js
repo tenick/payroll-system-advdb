@@ -3,11 +3,13 @@ const Payroll = require('../models/Payroll');
 const addPayroll = async (req, res) => {
     try {
         const {
+            payroll_description,
             creation_date,
-            net_salary,
+            gross_salary,
+            timesheet_id,
             employee_id } = req.body;
     
-        const newPayrollID = await Payroll.addPayroll(creation_date, net_salary, employee_id);
+        const newPayrollID = await Payroll.save(payroll_description, creation_date, gross_salary, timesheet_id, employee_id);
         res.json({msg: 'POST new payroll ID', id: newPayrollID});
     }
     catch (err){

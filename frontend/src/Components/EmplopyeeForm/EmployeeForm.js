@@ -67,7 +67,7 @@ const EmployeeForm = ({handleSubmit, submitAction, defaultEmployeeDetails, setEm
                     <input required type="number" defaultValue={defaultEmployeeDetails?.emergency_leave} disabled={isInputDisabled} name="emergency_leave" onChange={e => setEmployeeDetails.setEmergency_leave(e.target.value)} />
                 </div>
             </div>
-            {!isSubmitDisabled && <button className='employee-form-submit'>{submitAction}</button>}
+            {!isSubmitDisabled && <button className='form-submit'>{submitAction}</button>}
         </form>
     )
 }
