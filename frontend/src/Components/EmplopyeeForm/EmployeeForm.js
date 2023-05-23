@@ -1,6 +1,9 @@
 import './EmployeeForm.css';
+import { useAuthStatus } from '../../Hooks/useAuthStatus';
 
 const EmployeeForm = ({handleSubmit, submitAction, defaultEmployeeDetails, setEmployeeDetails, isInputDisabled, isSubmitDisabled}) => {
+    const { userState } = useAuthStatus();
+    
     return (
         <form onSubmit={handleSubmit}>
             <div class='add-emp-inputs'>
@@ -19,7 +22,7 @@ const EmployeeForm = ({handleSubmit, submitAction, defaultEmployeeDetails, setEm
                     <input required type="text" defaultValue={defaultEmployeeDetails?.contact_number} disabled={isInputDisabled} name="contact_number" onChange={e => setEmployeeDetails.setContact_number(e.target.value)} />
                 </div>
                 
-                { submitAction?.toLowerCase() !== 'edit' && false &&
+                { userState.user.role === 'admin' && submitAction.toLowerCase() !== 'edit' &&
                     <div class='add-emp-usercredentials'>
                         <h1>User Credentials:</h1>
                         <label for="in_email">Email Address:</label>
@@ -29,7 +32,6 @@ const EmployeeForm = ({handleSubmit, submitAction, defaultEmployeeDetails, setEm
                         <input required type="password" defaultValue={defaultEmployeeDetails?.user_password} disabled={isInputDisabled} name="user_password" onChange={e => setEmployeeDetails.setUser_password(e.target.value)} />
                     </div>
                 }
-                
 
                 <div class='add-emp-details'>
                     <h1>Employee Details:</h1>

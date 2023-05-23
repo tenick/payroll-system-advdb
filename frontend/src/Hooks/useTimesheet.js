@@ -5,7 +5,7 @@ import { useAuthStatus } from './useAuthStatus';
 export const useTimesheet = () => {
     const { selectedEmployeeState, selectedEmployeeDispatch } = useSelectedEmployee();
     const { userState, authorize } = useAuthStatus();
-    const [employeeTimesheetsData, setEmployeeTimesheetsData] = useState(null);
+    const [employeeTimesheetsData, setEmployeeTimesheetsData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {

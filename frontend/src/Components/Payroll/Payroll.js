@@ -3,12 +3,12 @@ import './Payroll.css';
 import { useState, useEffect } from 'react';
 import { useAuthStatus } from '../../Hooks/useAuthStatus';
 import { useSelectedEmployee } from '../../Hooks/useSelectedEmployee';
-import { reformatDateStringToHTMLInputDateTypeString, calculateNetSalary } from '../../Utils/Utility'
 import Navlink from '../Navbar/Navlink';
+import PayrollsView from './PayrollsView';
 
 const Payroll = () => {
     const { userState, authorize } = useAuthStatus();
-    const { selectedEmployeeState, selectedEmployeeDispatch } = useSelectedEmployee();
+    const { selectedEmployeeState } = useSelectedEmployee();
     const [ employeePayrollsData, setEmployeePayrollsData ] = useState([]);
     
     useEffect(() => {
@@ -52,72 +52,35 @@ const Payroll = () => {
         <section id="payroll">
             <h1>Payroll:</h1>
             <hr />
-
             {
-				employeePayrollsData !== null && employeePayrollsData.length !== 0 ?
-				<>
-					<div className='table'>
-                        <div className='tableRow tableHeader'>
-                            <div className='tableCell'>
-                                Creation Date
-                            </div>
-                            <div className='tableCell'>
-                                Payroll Description
-                            </div>
-                            <div className='tableCell'>
-                                Worked Hours
-                            </div>
-                            <div className='tableCell'>
-                                Gross Salary
-                            </div>
-                            <div className='tableCell'>
-                                Net Salary
-                            </div>
-                            <div className='tableCell'>
-                                Download
-                            </div>
-                        </div>
-                        {
-                            employeePayrollsData.map(payroll => 
-                                <div className='tableRow' key={ payroll.payroll_id }>
-                                    <div className='tableCell'>
-                                        {reformatDateStringToHTMLInputDateTypeString(payroll.creation_date)}
-                                    </div>
-                                    <div className='tableCell'>
-                                        {payroll.payroll_description}
-                                    </div>
-                                    <div className='tableCell'>
-                                        {payroll.timesheetData.worked_hours}
-                                    </div>
-                                    <div className='tableCell'>
-                                        {parseFloat(payroll.gross_salary).toFixed(2)}
-                                    </div>
-                                    <div className='tableCell'>
-                                        {calculateNetSalary(payroll.gross_salary, payroll.timesheetData.worked_hours)}
-                                    </div>
-                                    <div className='tableCell'>
-                                        <button>.pdf</button>
-                                        <button>.xsls</button>
-                                    </div>
-                                </div>
-                            )
-                        }
-                    </div>
-				</>
+                userState.user.role === 'employee' ?
+                <>
+                    {
+                        employeePayrollsData !== null && employeePayrollsData.length !== 0 ?
+                        <PayrollsView employeePayrollsData={employeePayrollsData} />
+                        :
+                        <div className='empty-section-msg'>
+							No payroll found
+						</div>
+                    }
+                </>
 				:
 				<>
 				{
-					userState.user.role === 'employee' ?
-					<>
-						<div className='empty-section-msg'>
-							No timesheet found, create one <Navlink className={'genericLink'} path='/add_timesheet' isGenericLink >here...</Navlink>
-						</div>
-					</>
+                    selectedEmployeeState.employeeID === null ?
+                    <div className='empty-section-msg'>
+                        Select an employee first <Navlink className={'genericLink'} path='/employee' isGenericLink >here...</Navlink>
+                    </div>
 					:
 					<>
-						<div className='empty-section-msg'>
-							Select an employee first <Navlink className={'genericLink'} path='/employee' isGenericLink >here...</Navlink>
-						</div>
+                        {
+                            employeePayrollsData !== null && employeePayrollsData.length !== 0 ?
+                            <PayrollsView employeePayrollsData={employeePayrollsData} />
+                            :
+                            <div className='empty-section-msg'>
+                                No payroll found, generate one <Navlink className={'genericLink'} path='/generate_payroll' isGenericLink >here...</Navlink>
+                            </div>
+                        }
 					</>	
 				}
 				</>

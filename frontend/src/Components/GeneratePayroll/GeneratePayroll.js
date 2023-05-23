@@ -1,37 +1,31 @@
-import { useAuthStatus } from '../../Hooks/useAuthStatus';
 import { useTimesheet } from '../../Hooks/useTimesheet';
+import { useSelectedEmployee } from '../../Hooks/useSelectedEmployee';
 import TimesheetsView from '../TimeSheet/TimesheetsView';
 import Navlink from '../Navbar/Navlink';
 
 const GeneratePayroll = () => {
-    const { userState } = useAuthStatus();
 	const { employeeTimesheetsData, setEmployeeTimesheetsData } = useTimesheet();
+	const { selectedEmployeeState } = useSelectedEmployee();
 
     return (
         <section id="timesheet">
 			<h1>Generate Payroll:</h1>
             <hr />
 			{
-				employeeTimesheetsData !== null  ?
-				<>
-					<TimesheetsView employeeTimesheetsData={employeeTimesheetsData} setEmployeeTimesheetsData={setEmployeeTimesheetsData} isForPayrollGeneration />
-				</>
+				selectedEmployeeState.employeeID === null ?
+				<div className='empty-section-msg'>
+					Select an employee first <Navlink className={'genericLink'} path='/employee' isGenericLink >here...</Navlink>
+				</div>
 				:
 				<>
-				{
-					userState.user.role === 'employee' ?
-					<>
+					{
+						employeeTimesheetsData !== null && employeeTimesheetsData.length !== 0 ?
+						<TimesheetsView employeeTimesheetsData={employeeTimesheetsData} setEmployeeTimesheetsData={setEmployeeTimesheetsData} isForPayrollGeneration />
+						:
 						<div className='empty-section-msg'>
-							No timesheet found, create one <Navlink className={'genericLink'} path='/add_timesheet' isGenericLink >here...</Navlink>
+							No timesheet found
 						</div>
-					</>
-					:
-					<>
-						<div className='empty-section-msg'>
-							Select an employee first <Navlink className={'genericLink'} path='/employee' isGenericLink >here...</Navlink>
-						</div>
-					</>	
-				}
+					}
 				</>
 			}
 			
